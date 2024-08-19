@@ -142,7 +142,13 @@ class Profiles:
           
 
           # Connect to SQLite database
-          conn = sqlite3.connect("data_base.db")
+          def read_database_path(file_path='data_base.txt'):
+            with open(file_path, 'r') as file:
+                return file.read().strip()
+
+        # Lire le chemin de la base de données depuis le fichier texte
+          database_path = read_database_path()
+          conn = sqlite3.connect(database_path)
           cursor = conn.cursor()
 
           # Fetch data from SQLite
@@ -165,7 +171,13 @@ class Profiles:
     def lire(self):
           
           # Connect to SQLite database
-          conn = sqlite3.connect("data_base.db")
+          def read_database_path(file_path='data_base.txt'):
+            with open(file_path, 'r') as file:
+                return file.read().strip()
+
+        # Lire le chemin de la base de données depuis le fichier texte
+          database_path = read_database_path()
+          conn = sqlite3.connect(database_path)
           cursor = conn.cursor()
 
           # Fetch data from SQLite
@@ -212,7 +224,13 @@ class Profiles:
     def delete(self):
     
         # Connect to SQLite database
-        conn = sqlite3.connect("data_base.db")
+        def read_database_path(file_path='data_base.txt'):
+            with open(file_path, 'r') as file:
+                return file.read().strip()
+
+        # Lire le chemin de la base de données depuis le fichier texte
+        database_path = read_database_path()
+        conn = sqlite3.connect(database_path)
         cursor = conn.cursor()
         req = ("delete from Connexion where ID="+self.row_id)
         cursor.execute(req)
@@ -230,7 +248,13 @@ class Profiles:
 
         # print(nom, prenom, age, motif, jour, rendez_vous, montant_total, versement, reste, tel )  
         
-        conn = sqlite3.connect("data_base.db")
+        def read_database_path(file_path='data_base.txt'):
+            with open(file_path, 'r') as file:
+                return file.read().strip()
+
+        # Lire le chemin de la base de données depuis le fichier texte
+        database_path = read_database_path()
+        conn = sqlite3.connect(database_path)
         cursor = conn.cursor()
 
         if (nom == '' or prenom == '' ) :
@@ -249,7 +273,13 @@ class Profiles:
     def rechercher_ligne_par_valeur(self):
 
         rechercher_entry = self.rechercher_entry.get()
-        conn = sqlite3.connect("data_base.db")
+        def read_database_path(file_path='data_base.txt'):
+            with open(file_path, 'r') as file:
+                return file.read().strip()
+
+        # Lire le chemin de la base de données depuis le fichier texte
+        database_path = read_database_path()
+        conn = sqlite3.connect(database_path)
         cursor = conn.cursor()
 
     # Remplacez 'nom_de_la_table' par le nom réel de votre table et 'nom_colonne' par le nom de la colonne dans laquelle vous voulez rechercher.

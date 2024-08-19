@@ -271,8 +271,13 @@ class List_Patients:
         # Calculer la valeur du reste
         
 
-        db_path = 'data_base.db'
-        conn = sqlite3.connect(db_path)
+        def read_database_path(file_path='data_base.txt'):
+            with open(file_path, 'r') as file:
+                return file.read().strip()
+
+        # Lire le chemin de la base de données depuis le fichier texte
+        database_path = read_database_path()
+        conn = sqlite3.connect(database_path)
         cursor = conn.cursor()
 
         if nom == '' or prenom == '':
@@ -306,8 +311,13 @@ class List_Patients:
            
     def lire(self):
           
-          # Connect to SQLite database
-          conn = sqlite3.connect("data_base.db")
+          def read_database_path(file_path='data_base.txt'):
+            with open(file_path, 'r') as file:
+                return file.read().strip()
+
+        # Lire le chemin de la base de données depuis le fichier texte
+          database_path = read_database_path()
+          conn = sqlite3.connect(database_path)
           cursor = conn.cursor()
 
           # Fetch data from SQLite
@@ -367,8 +377,13 @@ class List_Patients:
 
     def delete(self):
     
-        # Connect to SQLite database
-        conn = sqlite3.connect("data_base.db")
+        def read_database_path(file_path='data_base.txt'):
+            with open(file_path, 'r') as file:
+                return file.read().strip()
+
+        # Lire le chemin de la base de données depuis le fichier texte
+        database_path = read_database_path()
+        conn = sqlite3.connect(database_path)
         cursor = conn.cursor()
         req = ("delete from patient where ID="+self.row_id)
         cursor.execute(req)
@@ -393,7 +408,13 @@ class List_Patients:
 
 
         
-        conn = sqlite3.connect("data_base.db")
+        def read_database_path(file_path='data_base.txt'):
+            with open(file_path, 'r') as file:
+                return file.read().strip()
+
+        # Lire le chemin de la base de données depuis le fichier texte
+        database_path = read_database_path()
+        conn = sqlite3.connect(database_path)
         cursor = conn.cursor()
 
         if (nom == '' or prenom == '' ) :
@@ -402,20 +423,42 @@ class List_Patients:
               req = "UPDATE Patient set ID=? ,Nom=?, Prenom=?, Age=?, Motif=?, Jour=?, Rendez_vous=?, Montant_total=?, Versement=?, Reste=?, Num_de_tel=? WHERE ID=? "  
               val = (self.row_id, nom, prenom, age, motif, jour, rendez_vous, montant_total, versement, reste, tel, self.row_id)          
               cursor.execute(req, val)        
-              conn.commit()
-              conn.close() 
+              
               mb.showinfo('Mise a jour','Le patient a été mis à jour', parent=self.master)
-              self.lire()          
+              
+              # Fetch data from SQLite
+              req2 = "SELECT * FROM Patient where ID=?"
+              cursor.execute(req2,(self.row_id,))
+              data = cursor.fetchall()
+              
+        
+              self.table.delete(*self.table.get_children())
+
+              counter = 1  # Start from 1 or another appropriate value
+              for i in data:
+                self.table.insert('', 'end', iid=str(counter), values=i)
+                counter += 1
+              conn.commit()
+              conn.close()  
+              
+                       
               self.netoyer()
         
 
     def rechercher_ligne_par_valeur(self):
 
         rechercher_entry = self.rechercher_entry.get()
-        conn = sqlite3.connect("data_base.db")
+        def read_database_path(file_path='data_base.txt'):
+            with open(file_path, 'r') as file:
+                return file.read().strip()
+
+        # Lire le chemin de la base de données depuis le fichier texte
+        database_path = read_database_path()
+        conn = sqlite3.connect(database_path)
         cursor = conn.cursor()
-        req = ("SELECT * FROM Patient WHERE Id = ?")
-        cursor.execute(req,  rechercher_entry )   
+        #id_entry = int(rechercher_entry)
+        req = "SELECT * FROM Patient WHERE Id = ?"
+        cursor.execute(req, (rechercher_entry,))
         resultats = cursor.fetchall()
         print(resultats)
         if  not resultats: 
@@ -476,7 +519,13 @@ class List_Patients:
 
     def export_to_excel(self):
         # Connect to SQLite database
-        conn = sqlite3.connect("data_base.db")
+        def read_database_path(file_path='data_base.txt'):
+            with open(file_path, 'r') as file:
+                return file.read().strip()
+
+        # Lire le chemin de la base de données depuis le fichier texte
+        database_path = read_database_path()
+        conn = sqlite3.connect(database_path)
         cursor = conn.cursor()
 
         # Fetch data from SQLite
@@ -518,7 +567,13 @@ class List_Patients:
 
     def imprimer_informations_patient(self, patient_id):
         db_path = 'data_base.db'
-        conn = sqlite3.connect(db_path)
+        def read_database_path(file_path='data_base.txt'):
+            with open(file_path, 'r') as file:
+                return file.read().strip()
+
+        # Lire le chemin de la base de données depuis le fichier texte
+        database_path = read_database_path()
+        conn = sqlite3.connect(database_path)
         cursor = conn.cursor()
 
         try:
